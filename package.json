@@ -14,6 +14,7 @@
   "dependencies": {
     "fs-extra": "^9.0.1",
     "spv-base": "git+https://github.com/spvibm/spv-base.git",
+    "spv-extension-rest": "git+https://github.com/spvibm/spv-extension-rest.git",
     "yargs": "^16.0.3"
   }
 }
