@@ -107,12 +107,19 @@ require('yargs')
                   templateFile = templateFile.replace(new RegExp("{route}", 'g'), '/"'+accessPointNameRoute+'"');
                   templateFile = templateFile.replace(new RegExp("{verbs}", 'g'), JSON.stringify(accessPointVerbsArray) );
 
+                  // fse.copySync(template_path.dirname, "./"+projectName);
+                  fs.outputFileSync(fPath, templateFile)
+
                 result.push(fileStats);
             });
             return result;
         };
 
-        console.log(traverse(destinationDirectory))
+        let spvInfo = fs.readJsonSync(process.cwd()+'/spv.json')
+        spvInfo.accessPoints.push({ "name" : args[0] })
+        fs.writeJsonSync( process.cwd()+'/spv.json', spvInfo, {spaces: 2} )
+
+        // console.log(traverse(destinationDirectory))
 
   })
   .help()
