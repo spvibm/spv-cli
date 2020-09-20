@@ -1,0 +1,19 @@
+{
+  "name": "yargs-example",
+  "version": "1.0.0",
+  "description": "A simple Yargs CLI",
+  "bin": {
+    "yargs-example": "./yargs-example.js"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "preferGlobal": true,
+  "author": "Christopher Kade",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^9.0.1",
+    "spv-base": "git+https://github.com/spvibm/spv-base.git",
+    "yargs": "^16.0.3"
+  }
+}
