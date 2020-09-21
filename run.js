@@ -73,16 +73,42 @@ require('yargs')
       // set destinationDirectory
       destinationDirectory = process.cwd()+'/src/modules/'+accessPointName
 
+
+        const isRequirable = function (filename) {
+          var result;
+          var content;
+          var rex = /(?:^|\s*;|\s*=)\s*(?:module\.)*exports(\..+)*\s*=\s*.+/gm;
+      
+          try {
+              content = fs.readFileSync(filename).toString();
+          } catch (err) {
+              content = '';
+              console.log(err);
+          }
+          result = content.match(rex) ? true : false;
+          if (result) {
+              try {
+                  var temp = require(filename);
+              } catch (err) {
+                  result = false;
+                  console.log(err);
+              }
+          }
+          return result;
+      };
+
       fse.copySync(template_path.templates, destinationDirectory);
 
-        const path = require('path');
-        const util = require('util');
-        
+
         const traverse = function(dir, result = []) {
+
+            // const util = require('util');
         
             // list files in directory and loop through
             fs.readdirSync(dir).forEach((file) => {
-        
+
+              
+                const path = require('path');
                 // builds full path of file
                 const fPath = path.resolve(dir, file);
         
@@ -100,26 +126,64 @@ require('yargs')
         
                 fileStats.type = 'file';
 
+                if (isRequirable(fPath)){
+
                   let requiredFile = require(fPath)
                   let templateFile = requiredFile;
 
+                  // console.log("----------------")
+                  // console.log("----------------")
+                  // console.log(templateFile)
+                  // console.log("----------------")
+                  // console.log("----------------")
+
                   templateFile = requiredFile.replace(new RegExp("{className}", 'g'), accessPointName.charAt(0).toUpperCase() + accessPointName.slice(1) );
-                  templateFile = templateFile.replace(new RegExp("{route}", 'g'), '/"'+accessPointNameRoute+'"');
+                  templateFile = templateFile.replace(new RegExp("{route}", 'g'), '"/'+accessPointNameRoute+'"');
                   templateFile = templateFile.replace(new RegExp("{verbs}", 'g'), JSON.stringify(accessPointVerbsArray) );
-
+  
                   // fse.copySync(template_path.dirname, "./"+projectName);
-                  fs.outputFileSync(fPath, templateFile)
+                  // templateFile
 
-                result.push(fileStats);
+                  // console.log("----------------")
+                  // console.log("----------------")
+                  // console.log(templateFile)
+                  // console.log("----------------")
+                  // console.log("----------------")
+  
+                  fse.ensureFileSync( fPath );
+                  fse.writeFileSync(fPath, templateFile );
+  
+                  // fse.outputFileSync(fPath, templateFile)
+                  result.push(fileStats);
+
+                }
+
             });
             return result;
         };
 
-        let spvInfo = fs.readJsonSync(process.cwd()+'/spv.json')
-        spvInfo.accessPoints.push({ "name" : args[0] })
-        fs.writeJsonSync( process.cwd()+'/spv.json', spvInfo, {spaces: 2} )
+        traverse(process.cwd()+'/src/modules');
 
-        // console.log(traverse(destinationDirectory))
+
+        // VALIDATE TO ONLY WRITE ONCE
+        let spvInfo = fse.readJsonSync(process.cwd()+'/spv.json')
+        spvInfo.accessPoints.push({ "name" : accessPointName })
+        spvInfo.accessPoints = spvInfo.accessPoints.filter(function(item) {
+          return item.name === accessPointName;
+        });
+        fse.writeJsonSync( process.cwd()+'/spv.json', spvInfo, {spaces: 2} )
+
+        console.log('')
+        console.log('accesspoint', accessPointName , 'sucessfuly created')
+        console.log('')
+        console.log('try it:')
+        console.log('')
+        console.log('node .')
+        console.log('')
+        accessPointVerbsArray.forEach(function(itm, idx){
+          console.log('curl --request', itm ,'http://localhost:3000/'+accessPointNameRoute)
+        })
+        console.log('')
 
   })
   .help()
