@@ -138,7 +138,14 @@ require('yargs')
                   // console.log("----------------")
 
                   templateFile = requiredFile.replace(new RegExp("{className}", 'g'), accessPointName.charAt(0).toUpperCase() + accessPointName.slice(1) );
-                  templateFile = templateFile.replace(new RegExp("{route}", 'g'), '"/'+accessPointNameRoute+'"');
+                  let routeToAdd;
+                  if (accessPointNameRoute.substring(accessPointNameRoute.length-1) != "/"){
+                    routeToAdd = '"/'+accessPointNameRoute+'/"'
+                  }
+                  else{
+                    routeToAdd = '"/'+accessPointNameRoute+'"'
+                  }
+                  templateFile = templateFile.replace(new RegExp("{route}", 'g'), routeToAdd );
                   templateFile = templateFile.replace(new RegExp("{verbs}", 'g'), JSON.stringify(accessPointVerbsArray) );
   
                   // fse.copySync(template_path.dirname, "./"+projectName);
@@ -162,15 +169,26 @@ require('yargs')
             return result;
         };
 
-        traverse(process.cwd()+'/src/modules');
+        // traverse(process.cwd()+'/src/modules'+);
+        traverse(destinationDirectory);
+
+        
 
 
         // VALIDATE TO ONLY WRITE ONCE
         let spvInfo = fse.readJsonSync(process.cwd()+'/spv.json')
-        spvInfo.accessPoints.push({ "name" : accessPointName })
-        spvInfo.accessPoints = spvInfo.accessPoints.filter(function(item) {
-          return item.name === accessPointName;
-        });
+        // spvInfo.accessPoints.push({ "name" : accessPointName })
+        // spvInfo.accessPoints = spvInfo.accessPoints.filter(function(item) {
+        //   return item.name === accessPointName;
+        // });
+        let accessPointsToAdd = [];
+        spvInfo.accessPoints.forEach(function(itm, idx){
+          if (itm.name != accessPointName ){
+            accessPointsToAdd.push(itm);
+          }
+        })
+        accessPointsToAdd.push({ "name" : accessPointName });
+        spvInfo.accessPoints = accessPointsToAdd;
         fse.writeJsonSync( process.cwd()+'/spv.json', spvInfo, {spaces: 2} )
 
         console.log('')
