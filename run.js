@@ -23,11 +23,10 @@ require('yargs')
       console.log('your project', argv.name, 'was created!')
       console.log()
 
-        // VALIDATE TO ONLY WRITE ONCE
-      let spvInfo = fse.readJsonSync(process.cwd()+projectName+'/spv.json')
+      // VALIDATE TO ONLY WRITE ONCE
+      let spvInfo = fse.readJsonSync( process.cwd() + "/" + projectName + '/spv.json' );
       spvInfo["basePath"] = "/"+projectName+"/api/";
-      fse.writeJsonSync( process.cwd()+projectName+'/spv.json', spvInfo, {spaces: 2} )
-
+      fse.writeJsonSync( process.cwd() + "/" + projectName + '/spv.json' , spvInfo, {spaces: 2} )
 
   })
   .help()
