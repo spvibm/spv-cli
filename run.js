@@ -19,7 +19,15 @@ require('yargs')
       const template_path = require("spv-base");
       let projectName = argv.name;
       fse.copySync(template_path.dirname, "./"+projectName);
+      console.log()
       console.log('your project', argv.name, 'was created!')
+      console.log()
+
+        // VALIDATE TO ONLY WRITE ONCE
+      let spvInfo = fse.readJsonSync(process.cwd()+projectName+'/spv.json')
+      spvInfo["basePath"] = "/"+projectName+"/api/";
+      fse.writeJsonSync( process.cwd()+projectName+'/spv.json', spvInfo, {spaces: 2} )
+
 
   })
   .help()
@@ -131,12 +139,6 @@ require('yargs')
                   let requiredFile = require(fPath)
                   let templateFile = requiredFile;
 
-                  // console.log("----------------")
-                  // console.log("----------------")
-                  // console.log(templateFile)
-                  // console.log("----------------")
-                  // console.log("----------------")
-
                   templateFile = requiredFile.replace(new RegExp("{className}", 'g'), accessPointName.charAt(0).toUpperCase() + accessPointName.slice(1) );
                   let routeToAdd;
                   if (accessPointNameRoute.substring(accessPointNameRoute.length-1) != "/"){
@@ -147,15 +149,6 @@ require('yargs')
                   }
                   templateFile = templateFile.replace(new RegExp("{route}", 'g'), routeToAdd );
                   templateFile = templateFile.replace(new RegExp("{verbs}", 'g'), JSON.stringify(accessPointVerbsArray) );
-  
-                  // fse.copySync(template_path.dirname, "./"+projectName);
-                  // templateFile
-
-                  // console.log("----------------")
-                  // console.log("----------------")
-                  // console.log(templateFile)
-                  // console.log("----------------")
-                  // console.log("----------------")
   
                   fse.ensureFileSync( fPath );
                   fse.writeFileSync(fPath, templateFile );
@@ -172,15 +165,8 @@ require('yargs')
         // traverse(process.cwd()+'/src/modules'+);
         traverse(destinationDirectory);
 
-        
-
-
         // VALIDATE TO ONLY WRITE ONCE
         let spvInfo = fse.readJsonSync(process.cwd()+'/spv.json')
-        // spvInfo.accessPoints.push({ "name" : accessPointName })
-        // spvInfo.accessPoints = spvInfo.accessPoints.filter(function(item) {
-        //   return item.name === accessPointName;
-        // });
         let accessPointsToAdd = [];
         spvInfo.accessPoints.forEach(function(itm, idx){
           if (itm.name != accessPointName ){
@@ -191,14 +177,16 @@ require('yargs')
         spvInfo.accessPoints = accessPointsToAdd;
         fse.writeJsonSync( process.cwd()+'/spv.json', spvInfo, {spaces: 2} )
 
-        console.log('')
-        console.log('accesspoint', accessPointName , 'sucessfuly created')
-        console.log('')
-        console.log('try it:')
-        console.log('')
-        console.log('node .')
-        console.log('')
+
+        console.log()
+        console.log('your REST MODULE', accessPointName, 'was installed. try it !')
+        console.log()
+        console.log('Step 1: node .')
+        console.log()
+        console.log('Step 2: ')
+        console.log()
         accessPointVerbsArray.forEach(function(itm, idx){
+          
           console.log('curl --request', itm ,'http://localhost:3000/'+accessPointNameRoute)
         })
         console.log('')
