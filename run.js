@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
+const Messages = new (require('./messages'));
 const fse = require('fs-extra');
 const fs = require('fs');
 
-// node example.js create --name cards // node example.js create --name=cards-ms // node example.js create cards-ms
+// Crea nuevo projecto
 require('yargs')
   .scriptName("project-creation")
   .usage('$0 <cmd> [args]')
@@ -19,23 +20,20 @@ require('yargs')
       const template_path = require("spv-base");
       let projectName = argv.name;
       fse.copySync(template_path.dirname, "./"+projectName);
-      console.log()
-      console.log('your project', argv.name, 'was created!')
-      console.log()
 
-      // VALIDATE TO ONLY WRITE ONCE
       let spvInfo = fse.readJsonSync( process.cwd() + "/" + projectName + '/spv.json' );
       spvInfo["basePath"] = "/"+projectName+"/api/";
       fse.writeJsonSync( process.cwd() + "/" + projectName + '/spv.json' , spvInfo, {spaces: 2} )
+
+      Messages.onProjectCreated(argv.name, projectName);
 
   })
   .help()
   .argv
 
-// node run.js add accesspoint -n modulename -v GET POST PUT DELETE -r routename cards
-// node run.js add accesspoint --name modulename --verbs GET POST PUT DELETE --route routename cards
-  require('yargs')
-  .usage('Usage: $0 <cmd> [options]') // usage string of application.
+// Crea nuevo módulo REST
+require('yargs')
+  .usage('Usage: $0 <cmd> [options]') 
   .command('add accesspoint', 'adds accesspoint ...' , (yargs) => { 
 
     yargs.option('n', {
@@ -70,12 +68,18 @@ require('yargs')
 
       // validate we are in the root of a spv project 
       if ( !fs.existsSync(process.cwd()+'/spv.json') ) {
-        return console.log("current directory is not a supervielle project")
+        console.log("")
+        console.log("Por favor valida que estás ejecutando este comando dentro de un proyecto Supervielle")
+        console.log("")
+        return 
       };
 
       // validate we find modules folder
       if ( !fs.existsSync(process.cwd()+'/src/modules') ) {
-        return console.log("the installer found no 'src/modules' folder")
+        console.log("")
+        console.log("El instalador no encontró la carpeta 'src/modules'")
+        console.log("")
+        return 
       }
       // set destinationDirectory
       destinationDirectory = process.cwd()+'/src/modules/'+accessPointName
@@ -176,19 +180,7 @@ require('yargs')
         spvInfo.accessPoints = accessPointsToAdd;
         fse.writeJsonSync( process.cwd()+'/spv.json', spvInfo, {spaces: 2} )
 
-
-        console.log()
-        console.log('your REST MODULE', accessPointName, 'was installed. try it !')
-        console.log()
-        console.log('Step 1: node .')
-        console.log()
-        console.log('Step 2: ')
-        console.log()
-        accessPointVerbsArray.forEach(function(itm, idx){
-          
-          console.log('curl --request', itm ,'http://localhost:3000/'+accessPointNameRoute)
-        })
-        console.log('')
+        Messages.onRESTModuleCreated(accessPointName, accessPointVerbsArray, spvInfo, accessPointNameRoute);
 
   })
   .help()

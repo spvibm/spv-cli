@@ -9,7 +9,7 @@
   },
   "author": "IBM",
   "dependencies": {
-    "base-app": "git+https://github.com/spvibm/spv-base-app.git",
+     "base-app": "git+https://github.com/spvibm/spv-base-app.git",
     "config": "^3.3.1"
   },
   "publishConfig": {
