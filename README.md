@@ -1,7 +1,5 @@
 # Supervielle CLI Tool
 
-This is the command line client for [IBM Cloud](https://cloud.ibm.com/). See more information of IBM Cloud CLI on [IBM Cloud Docs](https://cloud.ibm.com/docs/cli?topic=cloud-cli-getting-started) .
-
 Este es el cliente de línea de comandos para la Organización de TI de Banco Supervielle. 
 
 ## Quickstart
