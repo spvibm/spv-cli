@@ -43,15 +43,17 @@ Podés descargar la última versión del instalador acá:
 
 ## Extendiendo el CLI-tool mediante plugins
 
-Dale un ojo al [repositorio de plugins]() paa revisar extensiones que mejoren las capacidades de este cliente de CLI.
+Dale un ojo al [repositorio de plugins]() para revisar extensiones que mejoren las capacidades de este cliente de CLI.
 
 
 
 ## Release notes
 
-Referite [here]() para ver las últimas notas de releases.
+Referite [acá]() para ver las últimas notas de releases.
 
 
-# Issues, defectos y solicitudes de nueva funcionalidad
+## Issues, defectos y solicitudes de nueva funcionalidad
 
 Por cualquier problema, defecto o solicitudes de nuevas funcionalidades por favor [abrir un ticket]() al equipo de mantenimiento y desarrollo.
+
+
