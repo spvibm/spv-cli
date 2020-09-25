@@ -1,8 +1,0 @@
-{
-  "accessPoints": [
-    {
-      "name": "users"
-    }
-  ],
-  "basePath": "/cards-ms/api/"
-}

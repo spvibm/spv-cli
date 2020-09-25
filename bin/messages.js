@@ -2,7 +2,7 @@
 "use strict";
 
 class Messages{
-    constructor(req, res, next){
+    constructor(){
     }
 
     onProjectCreated(name, projectName){
@@ -31,6 +31,12 @@ class Messages{
           console.log('curl --request', itm ,'http://localhost:3000'+ spvInfo.basePath + accessPointNameRoute)
         })
         console.log('')
+    }
+
+    swaggerJsonPathDoesNotExist(){
+        console.log()
+        console.log('La ruta ingresada por el parámetro --swaggerJson no existe')
+        console.log()
     }
     
 }

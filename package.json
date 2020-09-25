@@ -1,9 +1,9 @@
 {
-  "name": "yargs-example",
+  "name": "spv-cli-tool",
   "version": "1.0.0",
   "description": "A simple Yargs CLI",
   "bin": {
-    "yargs-example": "./yargs-example.js"
+    "run": "./run.js"
   },
   "keywords": [
     "cli"
