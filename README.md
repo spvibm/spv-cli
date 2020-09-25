@@ -8,9 +8,7 @@ Descarga y ejecuta el instalador correspondiente a tu plataforma desde la secci�
 
 Una vez instalado tendrás acceso a los comandos básicos:
 
-1. CREATE
-
-Crea un proyecto nuevo. Recibe como parámetro el nombre del proyecto.
+1. CREATE : Crea un proyecto nuevo. Recibe como parámetro el nombre del proyecto.
 
 ```
 spv create <NAME>
@@ -18,9 +16,7 @@ spv create <NAME>
 spv create hello-world-microservice
 ```
 
-2. ADD
-
-Agrega funcionalidad estándar a mi proyecto. 
+2. ADD : Agrega funcionalidad estándar a mi proyecto. 
 
 ```
 spv add [OPTIONS]
@@ -29,9 +25,9 @@ spv add accesspoint --name hello --verbs GET --route hello
 
 ```
 
-3. ADD+
+3. ADD+ : Agrega módulos REST definidos en un contrato que respete el estándar de Swagger
 ```
-spv add+ [OPTIONS]
+spv add+ accesspoints [OPTIONS]
 
 spv add+ accesspoints --swaggerJson /PATH/TO/VALID/JSON/SWAGGER/DEFINITION
 ```
