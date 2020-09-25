@@ -1,0 +1,45 @@
+# ToDo: sanitizar .gitlab-cid.yml
+services:
+  - name: docker-spv.artifactory.gscorp.ad/docker-dind:latest
+    alias: docker
+variables:
+  APP_NAME: demo
+  REPO_NAME: demo
+  BUILD_GROUP: snapshot
+  RESOURCE_PATH: src/main/resources
+  GROUP_ID: ar/com/supervielle
+  REPO_MVN: ${REPO_NAME}-maven-local
+  REPO_GENERIC: ${REPO_NAME}-generic-local
+  REPO_DOCKER: $REPO_NAME.artifactory.gscorp.ad
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://localhost:2375
+  DOCKER_TLS_CERTDIR: ‘’
+  SONAR_HOST_URL: “https://sonarqube.gscorp.ad”
+  DOCKERFILE: .
+  GROUP: ‘${BUILD_GROUP}.ar.com.supervielle’
+before_script:
+    # - export GRADLE_USER_HOME=`pwd`/.gradle
+    # - export BUILD_VERSION=$(cat build.version)
+#stages:
+#  - EphemeralSQLTestsCodeQuality
+#  - Build
+#  - Package
+#  - Deploy
+#  - Release
+#  - PagesTests
+include:
+  - project: ‘gitlab-ci-templates/kubernetes’
+    ref: ‘master’
+    file: ‘.build.yml’
+  - project: ‘gitlab-ci-templates/kubernetes’
+    ref: ‘master’
+    file: ‘.package.yml’
+  - project: ‘gitlab-ci-templates/kubernetes’
+    ref: ‘master’
+    file: ‘.deploy.yml’
+  - project: ‘gitlab-ci-templates/kubernetes’
+    ref: ‘develop’
+    file: ‘.ephemeralsql.yml’
+  - project: ‘gitlab-ci-templates/kubernetes’
+    ref: ‘master’
+    file: ‘.release.yml’
