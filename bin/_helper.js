@@ -71,7 +71,7 @@ class Helper{
                 
                   const path = require('path');
                   // builds full path of file
-                  const fPath = path.resolve(dir, file);
+                  let fPath = path.resolve(dir, file);
           
                   // prepare stats obj
                   const fileStats = { file, path: fPath };

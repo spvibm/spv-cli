@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const Messages = new (require('./messages'));
-const Helper = new (require('./helper'));
+const Helper = new (require('../build/helper'));
 const fse = require('fs-extra');
 const fs = require('fs');
 
@@ -10,12 +10,13 @@ require('yargs')
   .scriptName("project-creation")
   .usage('$0 <cmd> [args]')
   .command('create <name>', 'Creates a project', (yargs) => {
-    // .command('create [name]', 'Creates a project', (yargs) => {
+
       yargs.positional('name', {
         type: 'string',
         default: 'spv-example',
         describe: 'Project name'
-        })
+      })
+
   }, function (argv) {
 
       const template_path = require("spv-base");
@@ -24,7 +25,7 @@ require('yargs')
 
       let spvInfo = fse.readJsonSync( process.cwd() + "/" + projectName + '/spv.json' );
       spvInfo["basePath"] = "/"+projectName+"/api/";
-      fse.writeJsonSync( process.cwd() + "/" + projectName + '/spv.json' , spvInfo, {spaces: 2} )
+      fse.writeJsonSync( process.cwd() + "/" + projectName + '/spv.json' , spvInfo, {spaces: 2} );
 
       Messages.onProjectCreated(argv.name, projectName);
 
@@ -32,6 +33,28 @@ require('yargs')
   .help()
   .argv
 
+
+// const { exec } = require("child_process");
+// const { runInContext } = require('vm');
+
+// require('yargs')
+//   .scriptName("test")
+//   .usage('$0 <cmd> [args]')
+//   .command('mvnVersion <name>', 'Checks Maven Version ...', (yargs) => {
+
+//       yargs.positional('name', {
+//         type: 'string',
+//         default: 'test',
+//         describe: 'test'
+//       })
+
+//   }, function (params) {
+
+//   })
+//   .help()
+//   .argv
+
+  
 // Crea nuevo módulo REST
 require('yargs')
   .usage('Usage: $0 <cmd> [options]') 
@@ -44,9 +67,8 @@ require('yargs')
     .demand('n') 
   
     yargs.option('v', { 
-      array: true, // even single values will be wrapped in [].
+      array: true, 
       description: 'an array of strings',
-      // default: 'test.js',
       alias: 'verbs'
     })
     .demand('v')
@@ -56,24 +78,18 @@ require('yargs')
       alias: 'route',
       description: 'endpoint route'
     })
-    .demand('r') // fail if 'q' not provided.
+    .demand('r') 
     .alias('route', 'r')
 
   }, function (argv) {
 
-    let accessPointName = argv.name;
-    let accessPointVerbsArray = argv.verbs;
-    let accessPointNameRoute = argv.route;
-
-    Helper.createRestModule({ 
-      name: accessPointName , 
-      verbs: accessPointVerbsArray , 
-      route: accessPointNameRoute 
-    })
+    Helper.createRestModule(argv)
 
   })
   .help()
   .argv
+
+
 
 // Crea módulos REST a partir de una definición Swagger en formato JSON (no YAML)
 require('yargs')
@@ -97,7 +113,6 @@ require('yargs')
   }
 
   let swaggerJson = fse.readJsonSync(swaggerJsonRoute)
-
   Helper.createRestModulesFromSwaggerJson(swaggerJson);
 
 })
