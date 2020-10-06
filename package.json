@@ -19,7 +19,7 @@
   }
   ,
   "pkg": {
-    "assets": "**/src/modules/**/*/.js",
-    "scripts": "**/src/modules/**/*/.js"
+    "assets": [ "node_modules/**/*", "src/**/*" ],
+    "targets": [ "node12-macos-x64", "node10-win-x64" ]
   }
 }
