@@ -10,7 +10,6 @@ require('yargs')
   .scriptName("project-creation")
   .usage('$0 <cmd> [args]')
   .command('create <name>', 'Creates a project', (yargs) => {
-    // .command('create [name]', 'Creates a project', (yargs) => {
       yargs.positional('name', {
         type: 'string',
         default: 'spv-example',
@@ -44,9 +43,8 @@ require('yargs')
     .demand('n') 
   
     yargs.option('v', { 
-      array: true, // even single values will be wrapped in [].
+      array: true, 
       description: 'an array of strings',
-      // default: 'test.js',
       alias: 'verbs'
     })
     .demand('v')
@@ -56,19 +54,15 @@ require('yargs')
       alias: 'route',
       description: 'endpoint route'
     })
-    .demand('r') // fail if 'q' not provided.
+    .demand('r') 
     .alias('route', 'r')
 
   }, function (argv) {
 
-    let accessPointName = argv.name;
-    let accessPointVerbsArray = argv.verbs;
-    let accessPointNameRoute = argv.route;
-
     Helper.createRestModule({ 
-      name: accessPointName , 
-      verbs: accessPointVerbsArray , 
-      route: accessPointNameRoute 
+      name: argv.name , 
+      verbs: argv.verbs , 
+      route: argv.route 
     })
 
   })
