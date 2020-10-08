@@ -10,7 +10,7 @@ class Helper{
 
     createRestModule(options){
 
-        const template_path = require("spv-extension-rest").paths;
+        const template_path = require("spv-rest-extension").paths;
         let accessPointName = options.name;
         let accessPointVerbsArray = options.verbs;
         let accessPointNameRoute = options.route;
